@@ -3,15 +3,17 @@
  *
  * @returns {string} The generated OTP.
  */
-module.exports = () => {
+const generateotp = () => {
   const otpLength = 25;
-  const regex = /\w/g;
+  const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let otp = '';
 
   for (let i = 0; i < otpLength; i++) {
-    otp += String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-    // Generate a random lowercase alphanumeric character
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    otp += characters[randomIndex];
   }
 
   return otp;
 };
+
+module.exports = { generateotp };

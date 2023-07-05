@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { generateOTP } = require('../commands/otpCommand'); // Assuming you have an otpCommand.js file with the OTP generation function
+const { generateotp } = require('../commands/otp.js'); // Assuming you have an otp.js file with the OTP generation function
 
 /**
  * Handles the authentication request.
@@ -12,13 +12,13 @@ const { generateOTP } = require('../commands/otpCommand'); // Assuming you have 
  */
 exports.authenticate = async (req, res) => {
   const { username, password } = req.body;
-  const enteredOTP = generateOTP(); // Call the generateOTP function from the otpCommand file
+  const enteredOTP = generateotp(); // Call the generateOTP function from the otpCommand file
 
   try {
     // Find the user with the provided username
     const user = await User.findOne({ username });
 
-    if (user && user.password === password && enteredOTP === generateOTP()) {
+    if (user && user.password === password && enteredOTP === generateotp()) {
       const token = jwt.sign({ username }, 'secret-key');
       res.json({ token });
     } else {

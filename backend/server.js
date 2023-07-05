@@ -7,7 +7,6 @@ const jwt = require('jsonwebtoken');
 const authCommand = require('./commands/authCommand');
 const secureCommand = require('./commands/secureCommand');
 const registerCommand = require('./commands/registerCommand');
-// Import the forgotpassword and resetpassword commands
 const forgotpasswordCommand = require('./commands/forgotpasswordCommand');
 
 const app = express();
@@ -57,37 +56,46 @@ const authtoken = (req, res, next) => {
 
 /**
  * Endpoint for user login.
- * It invokes the authorizeCommand's login function to handle the login request.
+ * It invokes the login function from authCommand to handle the login request.
  */
-app.post('/login', authCommand.login);
+app.post('/login', (req, res) => {
+  authCommand.login(req, res);
+});
 
 /**
  * Protected endpoint that requires authentication.
- * It invokes the secureCommand's secure function to handle the request.
+ * It invokes the secure function from secureCommand to handle the request.
  */
-app.get('/secure', authtoken, secureCommand.secure);
+app.get('/secure', authtoken, (req, res) => {
+  secureCommand.secure(req, res);
+});
 
 /**
  * Endpoint for user registration.
- * It invokes the registerCommand's register function to handle the registration request.
+ * It invokes the register function from registerCommand to handle the registration request.
  */
-app.post('/register', registerCommand.register);
+app.post('/register', (req, res) => {
+  registerCommand.register(req, res);
+});
 
 /**
  * Endpoint for initiating the forgot password process.
- * It invokes the forgotpasswordCommand's forgotpassword function to handle the request.
+ * It invokes the forgotpassword function from forgotpasswordCommand to handle the request.
  */
-app.post('/forgotpassword', forgotpasswordCommand.forgotpassword);
+app.post('/forgotpassword', (req, res) => {
+  forgotpasswordCommand.forgotPasswordCommand(req, res);
+});
 
 /**
  * Endpoint for resetting the password.
- * It invokes the forgotpasswordCommand's resetpassword function to handle the request.
+ * It invokes the resetpassword function from forgotpasswordCommand to handle the request.
  */
-app.post('/resetpassword', forgotpasswordCommand.resetpassword);
-
-// Middleware and server setup code...
+app.post('/resetpassword', (req, res) => {
+  forgotpasswordCommand.resetPasswordCommand(req, res);
+});
 
 // Start the server
-server.listen(5000, () => {
-  console.log('Server started on port 5000');
+const PORT = process.env.PORT || 5055;
+server.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });

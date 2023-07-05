@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User'); // Import the User model (assuming it exists)
-const { generateOTP } = require('../commands/otpCommand'); // Import the OTP generation command
-const { sendOTP } = require('../commands/emailCommand'); // Import the email sending command
+const { generateotp } = require('../commands/otp.js'); // Import the OTP generation command
+const { sendotp } = require('../commands/email.js'); // Import the email sending command
 
 /**
  * Handles the user registration request.
@@ -21,10 +21,10 @@ const register = async (req, res) => {
     await user.save();
 
     // Generate OTP
-    const otp = generateOTP();
+    const otp = generateotp();
 
     // Send OTP via email
-    sendOTP(userData.email, otp);
+    sendotp(userData.email, otp);
 
     res.json({ message: 'Registration successful' });
   } catch (error) {

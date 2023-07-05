@@ -1,6 +1,6 @@
 const UserModel = require('../models/User');
-const generateOTPCommand = require('../commands/otp');
-const sendOTPCommand = require('../commands/email');
+const { generateotp } = require('../commands/otp');
+const { sendotp } = require('../commands/email');
 
 /**
  * Handle the forgot password request.
@@ -21,14 +21,14 @@ const forgotPasswordCommand = async (req, res) => {
     }
 
     // Generate OTP
-    const otp = generateOTPCommand();
+    const otp = generateotp();
 
     // Save the OTP to the user document
     user.otp = otp;
     await user.save();
 
     // Send OTP to user's email
-    sendOTPCommand(user.email, otp);
+    sendotp(user.email, otp);
 
     res.json({ message: 'OTP sent to registered email' });
   } catch (error) {
