@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const { generateotp } = require('../commands/otp');
 const { sendotp } = require('../commands/email');
 
-// Create a connection to your MongoDB database
+// Create a connection to the MongoDB database
 mongoose.connect('mongodb://localhost:27017/mydatabase', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
-// Create a User schema
+// Define the User schema
 const userSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -27,7 +27,7 @@ const UserModel = mongoose.model('User', userSchema);
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-const forgotPasswordCommand = async (req, res) => {
+const forgotPassword = async (req, res) => {
   try {
     const { username } = req.body;
 
@@ -62,7 +62,7 @@ const forgotPasswordCommand = async (req, res) => {
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  */
-const resetPasswordCommand = async (req, res) => {
+const resetPassword = async (req, res) => {
   try {
     const { username, otp, newPassword } = req.body;
 
@@ -90,4 +90,7 @@ const resetPasswordCommand = async (req, res) => {
   }
 };
 
-module.exports = { forgotPasswordCommand, resetPasswordCommand };
+module.exports = {
+  forgotPassword,
+  resetPassword,
+};

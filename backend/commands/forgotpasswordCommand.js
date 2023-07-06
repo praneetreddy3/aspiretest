@@ -1,6 +1,6 @@
-const UserModel = require('../models/User');
-const { generateotp } = require('../commands/otp');
-const { sendotp } = require('../commands/email');
+const UserModel = require('../models/User.js');
+const { generateotp } = require('../commands/otp.js');
+const { sendotp } = require('../commands/email.js');
 
 /**
  * Handle the forgot password request.

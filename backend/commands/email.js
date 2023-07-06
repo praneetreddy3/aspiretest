@@ -11,14 +11,14 @@ module.exports = (email, otp) => {
     host: 'smtp.ethereal.email',
     port: 587, // Replace with your email service provider (e.g., Gmail, Outlook)
     auth: {
-      user: 'pooran.k@aspireinfolabs.com',
+      user: 'pooran.k@aspireinfolabs@email.com',
       pass: 'password123',
     },
   });
 
   // Configure the email options
   const mailOptions = {
-    from: 'pooran.k@aspireinfolabs.com', // Replace with your email address
+    from: 'pooran.k@aspireinfolabs@email.com', // Replace with your email address
     to: email, // The recipient's email address
     subject: 'OTP for Registration',
     text: `Your OTP is ${otp}`,

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const User = require('../models/User'); // Import the User model (assuming it exists)
-const { generateotp } = require('../commands/otp.js'); // Import the OTP generation command
-const { sendotp } = require('../commands/email.js'); // Import the email sending command
+const User = require('../models/User.js');
+const { generateotp } = require('../commands/otp.js');
+const { sendotp } = require('../commands/email.js');
 
 /**
  * Handles the user registration request.
