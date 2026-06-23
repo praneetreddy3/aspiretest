@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 const User = require('../models/User.js');
 const { generateotp } = require('../commands/otp.js');
 const { sendotp } = require('../commands/email.js');
@@ -13,6 +14,9 @@ const { sendotp } = require('../commands/email.js');
 const register = async (req, res) => {
   try {
     const userData = req.body;
+
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
 
     // Create a new user document using the User model
     const user = new User(userData);
