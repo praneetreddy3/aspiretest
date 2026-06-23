@@ -1,8 +1,11 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const http = require('http');
 const jwt = require('jsonwebtoken');
+const passport = require('passport');
+require('./config/passport');
 
 const authCommand = require('./commands/authCommand');
 const secureCommand = require('./commands/secureCommand');
@@ -14,6 +17,7 @@ const server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
 
 // Connect to MongoDB
 mongoose
@@ -93,6 +97,18 @@ app.post('/forgotpassword', (req, res) => {
 app.post('/resetpassword', (req, res) => {
   forgotpasswordCommand.resetPasswordCommand(req, res);
 });
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { session: false }),
+  (req, res) => {
+    const token = jwt.sign({ username: req.user.username }, 'secret-key');
+    res.redirect(`http://localhost:3000/oauth-success?token=${token}`);
+  }
+);
 
 // Start the server
 const PORT = process.env.PORT || 5055;
