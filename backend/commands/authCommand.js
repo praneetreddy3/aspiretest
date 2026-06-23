@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/User.js');
 const { generateotp } = require('../commands/otp.js'); // Assuming you have an otp.js file with the OTP generation function
 
@@ -17,7 +18,12 @@ exports.authenticate = async (req, res) => {
     // Find the user with the provided username
     const user = await User.findOne({ username });
 
-    if (!user || user.password !== password) {
+    if (!user) {
+      return res.status(401).json({ message: 'Invalid username or password' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(401).json({ message: 'Invalid username or password' });
     }
 
