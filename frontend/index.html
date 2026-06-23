@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MentorMe</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f0f0f;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 40px;
+      width: 380px;
+      text-align: center;
+    }
+    h1 { font-size: 28px; margin-bottom: 8px; }
+    p  { color: #aaa; margin-bottom: 32px; font-size: 14px; }
+
+    .btn-google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px;
+      background: #fff;
+      color: #333;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-google:hover { background: #f0f0f0; }
+    .btn-google img { width: 20px; height: 20px; }
+
+    /* Success state */
+    .success-icon { font-size: 48px; margin-bottom: 16px; }
+    .token-box {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 20px;
+      word-break: break-all;
+      font-size: 11px;
+      color: #4ade80;
+      text-align: left;
+      max-height: 120px;
+      overflow-y: auto;
+    }
+    .label { font-size: 12px; color: #666; margin-bottom: 6px; text-align: left; }
+    .decoded {
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #60a5fa;
+      text-align: left;
+    }
+    .btn-back {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 10px 24px;
+      background: #333;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .btn-back:hover { background: #444; }
+  </style>
+</head>
+<body>
+  <div class="card" id="app"></div>
+
+  <script>
+    const app = document.getElementById('app');
+    const params = new URLSearchParams(window.location.search);
+    const token  = params.get('token');
+
+    if (token) {
+      // Store it (in memory — not localStorage, just display for now)
+      // Decode the payload (middle part of JWT)
+      let decoded = {};
+      try {
+        decoded = JSON.parse(atob(token.split('.')[1]));
+      } catch(e) {}
+
+      app.innerHTML = `
+        <div class="success-icon">✅</div>
+        <h1>Login Successful</h1>
+        <p>Google OAuth worked. JWT issued by your backend.</p>
+
+        <div class="label">JWT Token</div>
+        <div class="token-box">${token}</div>
+
+        <div class="label" style="margin-top:12px">Decoded Payload</div>
+        <div class="decoded"><pre>${JSON.stringify(decoded, null, 2)}</pre></div>
+
+        <a href="/" class="btn-back">← Back to Login</a>
+      `;
+    } else {
+      app.innerHTML = `
+        <h1>MentorMe</h1>
+        <p>Sign in to access your mentor dashboard</p>
+        <a href="http://localhost:5055/auth/google" class="btn-google">
+          <img src="https://www.google.com/favicon.ico" alt="Google"/>
+          Continue with Google
+        </a>
+      `;
+    }
+  </script>
+</body>
+</html>
