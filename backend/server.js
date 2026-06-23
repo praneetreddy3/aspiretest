@@ -63,7 +63,7 @@ const authtoken = (req, res, next) => {
  * It invokes the login function from authCommand to handle the login request.
  */
 app.post('/login', (req, res) => {
-  authCommand.login(req, res);
+  authCommand.authenticate(req, res);
 });
 
 /**
